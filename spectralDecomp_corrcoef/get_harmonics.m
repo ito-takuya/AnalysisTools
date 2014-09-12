@@ -1,6 +1,7 @@
 function [wc,w0,a0,ak,bk,c0,ck]=get_harmonics(y,pas)
-% Not original code:
-% by Azziz Abdelmalek, taken from http://www.mathworks.com/matlabcentral/fileexchange/37654-get-harmoniques-of-a-real-signal/content/get_harmonics.m
+
+% This code is by Azziz Abdelmalek, as seen from:
+% http://www.mathworks.com/matlabcentral/fileexchange/37654-get-harmoniques-of-a-real-signal/content/get_harmonics.m
 
 %[wc,w0,a0,ak,bk,c0,ck]=get_harmonics(y,pas)
 % given a signal x(t),y=x(t)
