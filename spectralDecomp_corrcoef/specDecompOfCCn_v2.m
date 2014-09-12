@@ -1,0 +1,42 @@
+%Taku Ito
+%10/15/13
+
+function [ccn_seed c1 c2] = specDecompOfCCn_v2(v1, v2, samplingRate)
+	%Construct Main Function for computing spectral decomposition of correlation coefficient from a seed voxel to all other voxels
+	%PARAMETERS: v1 and v2 are time series, samplingRate is the samplingRate
+	%Output: A 1D array of the spectral decomposition of the correlation coefficient between time series 1 and time series 2
+	%(N.B. If you sum over the output, you will compute the correlation coefficient of the two time series.)
+
+	
+	%De-mean time series
+	v1 = v1 - mean(v1);
+	v2 = v2 - mean(v2);
+	
+	%Compute complex Fourier Coefficients
+	[wc, w0, a0, ak, bk, c0, ck] = get_harmonics(v1,1);
+	c1 = [c0 ck];
+	c1 = c1(1:length(c1)/2);
+	[wc, w0, a0, ak, bk, c0, ck] = get_harmonics(v2,1);
+	c2 = [c0 ck];
+	c2 = c2(1:length(c2)/2);
+	
+	%compute spectral decomposition of correlation coefficient
+	
+	ccn_seed = computeCCn(c1, c2, v1, v2);
+	
+	xaxis = [0:(samplingRate/2)/((length(v1)/2)):(samplingRate/2)];
+	length(xaxis)
+	%round xaxis decimals
+	
+	xaxis_plot = linspace(xaxis(1), xaxis(length(xaxis)), 8); %plot 8 points on xaxis
+	xaxis_plot = round(xaxis_plot*1000)/1000;
+	
+    if nargin > 2
+        plot(ccn_seed(floor(length(ccn_seed)/2) + 1))
+        set(gca, 'XTickLabel', xaxis_plot)
+        ylabel('CCn')
+        xlabel('Frequency (Hz)')
+        title('Spectral Decomposition of the Correlation Coefficient')
+    end
+	
+end
